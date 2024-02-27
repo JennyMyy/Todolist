@@ -1,11 +1,12 @@
 import { useState } from "react";
+import TodoTable from "./TodoTable";
 
 function TodoList() {
 
     const [desc, setDesc] = useState({ description: '', date: '' });
     const [todos, setTodos] = useState([]);
 
-    const handleChange = (event) => 
+    const handleChange = (event) =>
         setDesc({ ...desc, [event.target.name]: event.target.value });
     ;
 
@@ -14,14 +15,6 @@ function TodoList() {
         console.log(todos);
         setDesc({ description: '', date: '' })
     };
-
-    const itemsRows = todos.map((desc, index) =>
-        <tr key={index}>
-            <td>{desc.date}</td>
-            <td>{desc.description}</td>
-            <td><button onClick={() => deleteByIndex(index)}>Delete</button></td>
-        </tr>
-    )
 
     const deleteByIndex = (index) => {
         setTodos(todos.filter((desc, i) => i !== index));
@@ -37,21 +30,14 @@ function TodoList() {
                 onChange={handleChange}
             />
             Date: <input
-                type="text"
+                type="date"
                 name="date"
                 value={desc.date}
                 onChange={handleChange}
             />
             <button onClick={addTodo}>Add</button>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Description</th>
-                    </tr>
-                    {itemsRows}
-                </thead>
-            </table>
+
+            <TodoTable todos = {todos} poistaTehtava = {deleteByIndex} />
         </>
     );
 }
