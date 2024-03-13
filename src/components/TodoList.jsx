@@ -1,6 +1,12 @@
 import { useState } from "react";
 // import TodoTable from "./TodoTable";
 import TodoGrid from "./TodoGrid";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { Button, Stack, TextField } from "@mui/material";
+
+
 
 export default function TodoList() {
 
@@ -9,7 +15,9 @@ export default function TodoList() {
 
     const handleChange = (event) =>
         setDesc({ ...desc, [event.target.name]: event.target.value });
-    ;
+
+    const yourChangeDateFunc = (date) =>
+        setDesc({ ...desc, date });
 
     const addTodo = () => {
         setTodos([...todos, desc]);
@@ -18,37 +26,43 @@ export default function TodoList() {
     };
 
     const deleteByIndex = (index) => {
+        console.log(index);
         setTodos(todos.filter((desc, i) => i !== index));
     }
 
     return (
         <>
-            <h3>Add todo:</h3>
-            <input
-                type="text"
-                placeholder="description"
-                name="description"
-                value={desc.description}
-                onChange={handleChange}
-            />
-            <input
-                type="date"
-                placeholder="date"
-                name="date"
-                value={desc.date}
-                onChange={handleChange}
-            />
-            <input
-                type="text"
-                placeholder="priority"
-                name="priority"
-                value={desc.priority}
-                onChange={handleChange}
-            />
+            <Stack mt={2} direction="row" spacing={2} justifyContent="center" alignItems="center">
+                <TextField
+                    label="Description"
+                    name="description"
+                    value={desc.description}
+                    onChange={handleChange}>
+                </TextField>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                        label="Date"
+                        name="date"
+                        format="DD.MM.YYYY"
+                        value={desc.date}
+                        onChange={yourChangeDateFunc}
+                    />
+                </LocalizationProvider>
+                <TextField
+                    label="Priority"
+                    name="priority"
+                    value={desc.priority}
+                    onChange={handleChange}>
+                </TextField>
 
-            <button onClick={addTodo}>Add</button>
+                <Button
+                    variant="contained"
+                    onClick={addTodo}>
+                    Add
+                </Button>
+            </Stack>
 
-            <TodoGrid todos = {todos} deleteByIndex = {deleteByIndex} />
+            <TodoGrid todos={todos} deleteByIndex={deleteByIndex} />
         </>
     );
 }

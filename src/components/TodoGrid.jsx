@@ -1,8 +1,9 @@
 import { AgGridReact } from "ag-grid-react";
 import { useState, useRef } from "react";
+import { Button, Stack } from "@mui/material";
 
 import "ag-grid-community/styles/ag-grid.css";
-import "ag-grid-community/styles/ag-theme-material.css"; // Material Design theme
+import "ag-grid-community/styles/ag-theme-material.css"; 
 
 export default function TodoGrid(props) {
 
@@ -25,13 +26,15 @@ export default function TodoGrid(props) {
     const gridRef = useRef();
 
     const onDelete = () => {
-        const removeId = gridRef.current.getSelectedNodes()[0].id
+        const removeId = gridRef.current.getSelectedNodes()[0].rowIndex
         props.deleteByIndex(removeId);
     }
 
+
     return (
         <>
-            <button onClick={onDelete}>Delete</button>
+    
+            <Stack mt={2} direction="row" spacing={2} justifyContent="center" alignItems="center">
             <div className="ag-theme-material" style={{ width: 700, height: 500 }}>
                 <AgGridReact
                     ref={gridRef}
@@ -41,6 +44,13 @@ export default function TodoGrid(props) {
                     rowSelection="single"
                 />
             </div>
+            <Button
+                variant="outlined"
+                color="error"
+                onClick={onDelete}>
+                Delete
+            </Button>
+            </Stack>
 
         </>
     )
