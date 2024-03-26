@@ -5,6 +5,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { Button, Stack, TextField } from "@mui/material";
+import dayjs from "dayjs";
 
 
 
@@ -16,8 +17,10 @@ export default function TodoList() {
     const handleChange = (event) =>
         setDesc({ ...desc, [event.target.name]: event.target.value });
 
-    const yourChangeDateFunc = (date) =>
-        setDesc({ ...desc, date });
+    const yourChangeDateFunc = (date) => {
+        const formattedDate = dayjs(date).format('DD-MM-YYYY');
+        setDesc({ ...desc, date: formattedDate });
+    };
 
     const addTodo = () => {
         setTodos([...todos, desc]);
@@ -41,9 +44,6 @@ export default function TodoList() {
                 </TextField>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker
-                        label="Date"
-                        name="date"
-                        format="DD.MM.YYYY"
                         value={desc.date}
                         onChange={yourChangeDateFunc}
                     />
